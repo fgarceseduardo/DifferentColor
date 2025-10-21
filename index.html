@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,7 +18,7 @@
             canvas {
                 image-rendering: optimizeSpeed;
                 -webkit-interpolation-mode: nearest-neighbor;
-                /* CORRECTED: Stops browser from handling touch for scrolling/gestures */
+                /* CORRECCIÓN: Deshabilita gestos de desplazamiento del navegador */
                 touch-action: none; 
             }
             div.center_game
@@ -36,6 +37,7 @@
             <canvas id="canvas" width="1024" height="768">
                <p>Your browser doesn't support HTML5 canvas.</p>
             </canvas>
+            <div id="manualCursor" style="position: absolute; width: 30px; height: 30px; background: rgba(255, 0, 0, 0.7); border-radius: 50%; pointer-events: none; z-index: 100; transform: translate(-50%, -50%); display: none;"></div>
         </div>
 
         <script type="text/javascript" src="html5game/DifferentColor.js?FSBBC=969534784"></script>
@@ -50,19 +52,40 @@
                     }
                 }
                 
-                // Attach to document to ensure focus is always attempted
                 document.addEventListener('mousedown', focusGame, false);
                 document.addEventListener('touchstart', focusGame, false);
             };
         </script>
         
         <script type="text/javascript">
-            document.addEventListener('touchstart', function(e) {
-                // Prevents default browser actions when touching the canvas
-                if (e.target.id === 'canvas') {
-                    e.preventDefault();
+            document.addEventListener('DOMContentLoaded', function() {
+                var canvas = document.getElementById('canvas');
+                var cursor = document.getElementById('manualCursor');
+
+                function updateCursorPosition(e) {
+                    var rect = canvas.getBoundingClientRect();
+                    // Usar clientX/Y del primer toque
+                    var x = e.touches[0].clientX;
+                    var y = e.touches[0].clientY;
+
+                    // Posición relativa al contenedor del juego
+                    cursor.style.left = (x - rect.left) + 'px';
+                    cursor.style.top = (y - rect.top) + 'px';
                 }
-            }, { passive: false });
+
+                canvas.addEventListener('touchstart', function(e) {
+                    cursor.style.display = 'block';
+                    // Prevenir el comportamiento por defecto en el inicio del toque
+                    e.preventDefault(); 
+                    updateCursorPosition(e);
+                }, { passive: false });
+
+                canvas.addEventListener('touchmove', updateCursorPosition, { passive: false });
+
+                canvas.addEventListener('touchend', function() {
+                    cursor.style.display = 'none';
+                }, false);
+            });
         </script>
 
     </body>
