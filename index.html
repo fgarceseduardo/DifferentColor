@@ -6,25 +6,27 @@
         <meta name ="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta charset="utf-8"/>
+
         <title>Game Maker HTML 5</title>
 
         <style>
             body {
-              background: #222;
-              color:#cccccc;
+                background: #222;
+                color:#cccccc;
             }
             canvas {
-              image-rendering: optimizeSpeed;
-              -webkit-interpolation-mode: nearest-neighbor;
-              touch-action: none; /* Already correctly added */
+                image-rendering: optimizeSpeed;
+                -webkit-interpolation-mode: nearest-neighbor;
+                /* CORRECTED: Stops browser from handling touch for scrolling/gestures */
+                touch-action: none; 
             }
             div.center_game
             {
-              position: fixed;
-              top: 50%;
-              left: 50%;
-              margin-left: -512px;
-              margin-top: -384px;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                margin-left: -512px;
+                margin-top: -384px;
             }
         </style>
     </head>
@@ -37,22 +39,26 @@
         </div>
 
         <script type="text/javascript" src="html5game/DifferentColor.js?FSBBC=969534784"></script>
-
+        
         <script type="text/javascript">
             window.onload = function() {
                 var gameCanvas = document.getElementById('canvas'); 
+                
                 function focusGame() {
                     if (gameCanvas) {
                         gameCanvas.focus();
                     }
                 }
-                gameCanvas.addEventListener('mousedown', focusGame, false);
-                gameCanvas.addEventListener('touchstart', focusGame, false);
+                
+                // Attach to document to ensure focus is always attempted
+                document.addEventListener('mousedown', focusGame, false);
+                document.addEventListener('touchstart', focusGame, false);
             };
         </script>
-
+        
         <script type="text/javascript">
             document.addEventListener('touchstart', function(e) {
+                // Prevents default browser actions when touching the canvas
                 if (e.target.id === 'canvas') {
                     e.preventDefault();
                 }
