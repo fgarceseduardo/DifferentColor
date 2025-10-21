@@ -11,6 +11,30 @@
         <!-- Set the title bar of the page -->
         <title>Game Maker HTML 5</title>
 
+</div>
+
+        <script type="text/javascript" src="html5game/DifferentColor.js?FSBBC=969534784"></script>
+        
+        <script type="text/javascript">
+            window.onload = function() {
+                // Get the canvas element by its ID
+                var gameCanvas = document.getElementById('canvas'); 
+                
+                // Function to set focus
+                function focusGame() {
+                    // Check if canvas exists and then set focus
+                    if (gameCanvas) {
+                        gameCanvas.focus();
+                    }
+                }
+                
+                // Attach the focus function to mouse clicks and touch starts
+                gameCanvas.addEventListener('mousedown', focusGame, false);
+                gameCanvas.addEventListener('touchstart', focusGame, false);
+            };
+        </script>
+
+        
         <!-- Set the background colour of the document -->
         <style>
             body {
@@ -46,5 +70,6 @@
         <script type="text/javascript" src="html5game/DifferentColor.js?FSBBC=969534784"></script>
     </body>
 </html>
+
 
 
